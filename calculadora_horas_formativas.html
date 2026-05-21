@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculadora de horas formativas del director</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, sans-serif; background: #f5f5f3; color: #1a1a1a; padding: 2rem 1rem; }
+    .calc-wrap { max-width: 620px; margin: 0 auto; background: #fff; border-radius: 12px; padding: 2rem; border: 1px solid #e0e0da; }
+    h1 { font-size: 18px; font-weight: 500; margin-bottom: 0.25rem; }
+    .subtitle { font-size: 13px; color: #666; margin-bottom: 1.5rem; }
+    .section-title { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: #999; margin: 1.5rem 0 0.75rem; }
+    .input-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 0.5px solid #e8e8e4; gap: 12px; }
+    .input-row label { font-size: 14px; flex: 1; }
+    .input-row input { width: 80px; text-align: right; font-size: 14px; padding: 4px 8px; border: 1px solid #ddd; border-radius: 6px; background: #eef4ff; color: #1a4db8; font-weight: 500; outline: none; }
+    .input-row input:focus { border-color: #4a7de8; box-shadow: 0 0 0 2px rgba(74,125,232,0.15); }
+    .calc-row { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 0.5px solid #e8e8e4; }
+    .calc-row span:first-child { font-size: 13px; color: #555; }
+    .calc-row span:last-child { font-size: 13px; font-weight: 500; }
+    .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 1rem 0; }
+    .metric { background: #f5f5f3; border-radius: 8px; padding: 14px 16px; }
+    .metric-label { font-size: 12px; color: #888; margin-bottom: 4px; }
+    .metric-value { font-size: 22px; font-weight: 500; }
+    .result-card { border-radius: 10px; padding: 16px 20px; margin-top: 1rem; }
+    .result-card.positive { background: #EAF3DE; }
+    .result-card.negative { background: #FCEBEB; }
+    .result-card .label { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+    .result-card.positive .label { color: #3B6D11; }
+    .result-card.negative .label { color: #A32D2D; }
+    .result-card .value { font-size: 28px; font-weight: 500; }
+    .result-card.positive .value { color: #27500A; }
+    .result-card.negative .value { color: #791F1F; }
+    .result-card .sublabel { font-size: 12px; margin-top: 4px; }
+    .result-card.positive .sublabel { color: #3B6D11; }
+    .result-card.negative .sublabel { color: #A32D2D; }
+  </style>
+</head>
+<body>
+  <div class="calc-wrap">
+    <h1>Calculadora de horas formativas del director</h1>
+    <p class="subtitle">Introduce los datos en los campos azules. Los cálculos se actualizan automáticamente.</p>
+
+    <div class="section-title">Entradas</div>
+    <div class="input-row"><label>Número de centros / secciones</label><input type="number" id="b5" value="2" min="1" step="1" /></div>
+    <div class="input-row"><label>Profesores activos</label><input type="number" id="b6" value="10" min="0" step="1" /></div>
+    <div class="input-row"><label>Atención al alumno (ATT)</label><input type="number" id="b7" value="4" min="0" step="1" /></div>
+
+    <div class="section-title">Cálculo de reducciones</div>
+    <div class="calc-row"><span>Secciones adicionales (a partir de la 2ª)</span><span id="b10">1,0</span></div>
+    <div class="calc-row"><span>Reducción por profesores (1,5h por profe)</span><span id="b11">-15,0</span></div>
+    <div class="calc-row"><span>Reducción por ATT (0,5h por ATT)</span><span id="b12">-2,0</span></div>
+    <div class="calc-row"><span>Reducción por secciones adicionales (1h por sección)</span><span id="b13">-1,0</span></div>
+
+    <div class="section-title">Resultado semanal / mensual</div>
+    <div class="metrics">
+      <div class="metric"><div class="metric-label">Horas semanales</div><div class="metric-value" id="b16">14,0</div></div>
+      <div class="metric"><div class="metric-label">Horas mensuales</div><div class="metric-value" id="b17">61,6</div></div>
+    </div>
+
+    <div class="section-title">Tareas formativas realizadas</div>
+    <div class="input-row"><label>Cursos teóricos realizados</label><input type="number" id="b21" value="1" min="0" step="1" /></div>
+    <div class="input-row"><label>Prácticas realizadas</label><input type="number" id="b22" value="90" min="0" step="1" /></div>
+    <div class="input-row"><label>Masterclass realizadas</label><input type="number" id="b23" value="1" min="0" step="1" /></div>
+    <div class="input-row"><label>Evaluadores realizados</label><input type="number" id="b24" value="1" min="0" step="1" /></div>
+    <div class="input-row"><label>Asistencias a examen</label><input type="number" id="b25" value="1" min="0" step="1" /></div>
+    <div class="input-row"><label>Alumnos subidos a examen</label><input type="number" id="b26" value="7" min="0" step="1" /></div>
+    <div class="input-row"><label>Días festivos intersemanales</label><input type="number" id="b27" value="5" min="0" step="1" /></div>
+
+    <div id="result-card" class="result-card negative">
+      <div class="label">Resultado mensual final</div>
+      <div class="value" id="b30">-45,2 h</div>
+      <div class="sublabel" id="b30-sub">Déficit de horas formativas</div>
+    </div>
+  </div>
+
+  <script>
+    function fmt(n) { return n.toFixed(1).replace('.', ','); }
+    function val(id) { return parseFloat(document.getElementById(id).value) || 0; }
+
+    function calc() {
+      const b5 = val('b5'), b6 = val('b6'), b7 = val('b7');
+      const b10 = Math.max(b5 - 1, 0);
+      const b11 = -1.5 * b6;
+      const b12 = -0.5 * b7;
+      const b13 = b10 * -1;
+      const b16 = 32 + b11 + b12 + b13;
+      const b17 = (b16 / 5) * 22;
+
+      document.getElementById('b10').textContent = fmt(b10);
+      document.getElementById('b11').textContent = fmt(b11);
+      document.getElementById('b12').textContent = fmt(b12);
+      document.getElementById('b13').textContent = fmt(b13);
+      document.getElementById('b16').textContent = fmt(b16);
+      document.getElementById('b17').textContent = fmt(b17);
+
+      const b21 = val('b21'), b22 = val('b22'), b23 = val('b23');
+      const b24 = val('b24'), b25 = val('b25'), b26 = val('b26'), b27 = val('b27');
+      const b30 = b17 - (b21*16) - (b22*0.75) - (b23*2) - b24 - b25 - (b26*0.75) - (b27*(b16/5));
+
+      const card = document.getElementById('result-card');
+      document.getElementById('b30').textContent = fmt(b30) + ' h';
+      document.getElementById('b30-sub').textContent = b30 >= 0 ? 'Superávit de horas formativas' : 'Déficit de horas formativas';
+      card.className = 'result-card ' + (b30 >= 0 ? 'positive' : 'negative');
+    }
+
+    document.querySelectorAll('input').forEach(i => i.addEventListener('input', calc));
+    calc();
+  </script>
+</body>
+</html>
