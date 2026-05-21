@@ -100,8 +100,8 @@
 
       const card = document.getElementById('result-card');
       document.getElementById('b30').textContent = fmt(b30) + ' h';
-      document.getElementById('b30-sub').textContent = b30 >= 0 ? 'Superávit de horas formativas' : 'Déficit de horas formativas';
-      card.className = 'result-card ' + (b30 >= 0 ? 'positive' : 'negative');
+      document.getElementById('b30-sub').textContent = b30 > 0 ? 'Quedan horas por realizar' : b30 < 0 ? 'Se ha pasado de horas' : 'Justo al día';
+      card.className = 'result-card ' + (b30 > 0 ? 'negative' : 'positive');
     }
 
     document.querySelectorAll('input').forEach(i => i.addEventListener('input', calc));
