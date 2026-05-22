@@ -198,9 +198,9 @@
 
     <div class="section-label">Entradas</div>
     <div class="card">
-      <div class="row"><span class="row-label">Número de centros / secciones</span><input type="number" id="b5" value="2" min="1" step="1" /></div>
-      <div class="row"><span class="row-label">Profesores activos</span><input type="number" id="b6" value="10" min="0" step="1" /></div>
-      <div class="row"><span class="row-label">Atención al alumno (ATT)</span><input type="number" id="b7" value="4" min="0" step="1" /></div>
+      <div class="row"><span class="row-label">Número de centros / secciones</span><input type="number" id="b5" value="1" min="1" step="1" /></div>
+      <div class="row"><span class="row-label">Profesores activos</span><input type="number" id="b6" value="0" min="0" step="1" /></div>
+      <div class="row"><span class="row-label">Atención al alumno (ATT)</span><input type="number" id="b7" value="1" min="0" step="1" /></div>
     </div>
 
     <div class="section-label">Cálculo de reducciones</div>
@@ -219,13 +219,13 @@
 
     <div class="section-label">Tareas formativas realizadas</div>
     <div class="card">
-      <div class="row"><span class="row-label">Cursos teóricos realizados</span><input type="number" id="b21" value="1" min="0" step="1" /></div>
-      <div class="row"><span class="row-label">Prácticas realizadas</span><input type="number" id="b22" value="90" min="0" step="1" /></div>
-      <div class="row"><span class="row-label">Masterclass realizadas</span><input type="number" id="b23" value="1" min="0" step="1" /></div>
-      <div class="row"><span class="row-label">Evaluadores realizados</span><input type="number" id="b24" value="1" min="0" step="1" /></div>
-      <div class="row"><span class="row-label">Asistencias a examen</span><input type="number" id="b25" value="1" min="0" step="1" /></div>
-      <div class="row"><span class="row-label">Alumnos subidos a examen</span><input type="number" id="b26" value="7" min="0" step="1" /></div>
-      <div class="row"><span class="row-label">Días festivos intersemanales</span><input type="number" id="b27" value="5" min="0" step="1" /></div>
+      <div class="row"><span class="row-label">Cursos teóricos realizados</span><input type="number" id="b21" value="0" min="0" step="1" /></div>
+      <div class="row"><span class="row-label">Prácticas realizadas</span><input type="number" id="b22" value="0" min="0" step="1" /></div>
+      <div class="row"><span class="row-label">Masterclass realizadas</span><input type="number" id="b23" value="0" min="0" step="1" /></div>
+      <div class="row"><span class="row-label">Evaluadores realizados</span><input type="number" id="b24" value="0" min="0" step="1" /></div>
+      <div class="row"><span class="row-label">Asistencias a examen</span><input type="number" id="b25" value="0" min="0" step="1" /></div>
+      <div class="row"><span class="row-label">Alumnos subidos a examen</span><input type="number" id="b26" value="0" min="0" step="1" /></div>
+      <div class="row"><span class="row-label">Días festivos intersemanales</span><input type="number" id="b27" value="0" min="0" step="1" /></div>
     </div>
 
     <div id="result-card" class="result-card ko">
@@ -257,11 +257,12 @@
       const b21=val('b21'),b22=val('b22'),b23=val('b23'),b24=val('b24'),b25=val('b25'),b26=val('b26'),b27=val('b27');
       const b30=b17-(b21*16)-(b22*0.75)-(b23*2)-b24-b25-(b26*0.75)-(b27*(b16/5));
 
-      document.getElementById('b30').textContent=fmt(b30)+' h';
+      const display = Math.abs(b30).toFixed(1).replace('.', ',') + ' h';
+      document.getElementById('b30').textContent = (b30 > 0 ? '-' : '+') + display;
       const card=document.getElementById('result-card');
       const sub=document.getElementById('b30-sub');
-      if(b30>0){ card.className='result-card ko'; sub.textContent='Quedan horas por realizar'; }
-      else if(b30<0){ card.className='result-card ok'; sub.textContent='Se ha pasado de horas'; }
+      if(b30>0){ card.className='result-card ko'; sub.textContent='Te faltan por realizar este mes'; }
+      else if(b30<0){ card.className='result-card ok'; sub.textContent='Llevas acumuladas de más este mes'; }
       else { card.className='result-card ok'; sub.textContent='Justo al día ✓'; }
     }
 
