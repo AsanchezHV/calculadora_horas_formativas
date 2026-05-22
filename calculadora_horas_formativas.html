@@ -4,189 +4,122 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Calculadora de horas formativas · Hoy Voy</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Nunito', sans-serif;
-      background: #fafaf8;
-      color: #1a1a1a;
-      min-height: 100vh;
-    }
+    body { font-family: 'Nunito', sans-serif; background: #fafaf8; color: #1a1a1a; min-height: 100vh; }
 
     /* HEADER */
-    .top-bar {
-      background: #fff;
-      border-bottom: 1px solid #e8e8e2;
-      padding: 16px 2.5rem;
-      display: flex;
-      align-items: center;
-      gap: 14px;
+    .top-bar { background: #fff; border-bottom: 1px solid #e8e8e2; padding: 14px 2.5rem; display: flex; align-items: center; justify-content: space-between; }
+    .top-bar-left { display: flex; align-items: center; gap: 12px; }
+    .top-bar img { width: 42px; height: 42px; }
+    .top-bar-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #aaa; }
+    .btn-export {
+      display: flex; align-items: center; gap: 7px;
+      background: #1a1a1a; color: #fff;
+      border: none; border-radius: 8px;
+      padding: 9px 16px; font-size: 13px; font-weight: 700;
+      font-family: inherit; cursor: pointer; transition: opacity 0.15s;
     }
-    .top-bar img { width: 44px; height: 44px; }
-    .top-bar-label {
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: #aaa;
-    }
+    .btn-export:hover { opacity: 0.8; }
+    .btn-export svg { width: 15px; height: 15px; }
 
     /* HERO */
-    .hero {
-      background: #f5e400;
-      padding: 28px 2.5rem 24px;
-      border-bottom: 1px solid #e0d000;
-    }
-    .hero h1 {
-      font-size: clamp(18px, 3vw, 24px);
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: #1a1a1a;
-    }
-    .hero p {
-      font-size: 13px;
-      font-weight: 600;
-      color: #555;
-      margin-top: 5px;
-    }
+    .hero { background: #f5e400; padding: 26px 2.5rem 22px; border-bottom: 1px solid #e0d000; }
+    .hero h1 { font-size: clamp(17px, 3vw, 22px); font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; }
+    .hero p { font-size: 13px; font-weight: 600; color: #555; margin-top: 5px; }
 
     /* MAIN */
     .main { max-width: 600px; margin: 2.5rem auto; padding: 0 1.5rem 4rem; }
-
-    /* SECTION LABEL */
-    .section-label {
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: #aaa;
-      margin: 2rem 0 0.6rem;
-    }
+    .section-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: #aaa; margin: 2rem 0 0.6rem; }
 
     /* CARD */
-    .card {
-      background: #fff;
-      border: 1px solid #e8e8e2;
-      border-radius: 14px;
-      overflow: hidden;
-    }
-
-    /* ROWS */
-    .row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 13px 20px;
-      border-bottom: 1px solid #f0f0ea;
-      gap: 16px;
-    }
+    .card { background: #fff; border: 1px solid #e8e8e2; border-radius: 14px; overflow: hidden; }
+    .row { display: flex; align-items: center; justify-content: space-between; padding: 13px 20px; border-bottom: 1px solid #f0f0ea; gap: 16px; }
     .row:last-child { border-bottom: none; }
-    .row-label {
-      font-size: 14px;
-      font-weight: 600;
-      color: #333;
-      flex: 1;
-    }
+    .row-label { font-size: 14px; font-weight: 600; color: #333; flex: 1; }
     .row input {
-      width: 80px;
-      text-align: right;
-      font-size: 15px;
-      font-weight: 700;
-      font-family: inherit;
-      padding: 6px 10px;
-      border: 1.5px solid #ddd;
-      border-radius: 8px;
-      background: #fffbe6;
-      color: #1a1a1a;
-      outline: none;
+      width: 80px; text-align: right; font-size: 15px; font-weight: 700;
+      font-family: inherit; padding: 6px 10px;
+      border: 1.5px solid #ddd; border-radius: 8px;
+      background: #fffbe6; color: #1a1a1a; outline: none;
       transition: border-color 0.15s, box-shadow 0.15s;
     }
-    .row input:focus {
-      border-color: #c8ba00;
-      box-shadow: 0 0 0 3px rgba(200,186,0,0.12);
-    }
-    .calc-val {
-      font-size: 14px;
-      font-weight: 700;
-      min-width: 56px;
-      text-align: right;
-      color: #1a1a1a;
-    }
+    .row input:focus { border-color: #c8ba00; box-shadow: 0 0 0 3px rgba(200,186,0,0.12); }
+    .calc-val { font-size: 14px; font-weight: 700; min-width: 56px; text-align: right; color: #1a1a1a; }
     .calc-val.neg { color: #b94040; }
 
     /* METRICS */
-    .metrics {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-    }
-    .metric {
-      padding: 20px;
-    }
+    .metrics { display: grid; grid-template-columns: 1fr 1fr; }
+    .metric { padding: 20px; }
     .metric:first-child { border-right: 1px solid #f0f0ea; }
-    .metric-label {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: #aaa;
-      margin-bottom: 6px;
-    }
-    .metric-value {
-      font-size: 28px;
-      font-weight: 900;
-      color: #1a1a1a;
-    }
+    .metric-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #aaa; margin-bottom: 6px; }
+    .metric-value { font-size: 26px; font-weight: 700; color: #1a1a1a; }
 
     /* RESULT */
-    .result-card {
-      border-radius: 14px;
-      padding: 22px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      border: 1px solid transparent;
-      margin-top: 1.25rem;
-      transition: background 0.2s, border-color 0.2s;
-    }
-    .result-card.ok {
-      background: #f5e400;
-      border-color: #e0d000;
-    }
-    .result-card.ko {
-      background: #fff5f5;
-      border-color: #f0d0d0;
-    }
-    .result-label {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: #555;
-      margin-bottom: 4px;
-    }
-    .result-sub {
-      font-size: 14px;
-      font-weight: 700;
-      color: #1a1a1a;
-    }
-    .result-value {
-      font-size: 34px;
-      font-weight: 900;
-      white-space: nowrap;
-    }
-    .result-card.ok .result-value { color: #1a1a1a; }
+    .result-card { border-radius: 14px; padding: 22px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; border: 1px solid transparent; margin-top: 1.25rem; transition: background 0.2s, border-color 0.2s; }
+    .result-card.ok { background: #edfaf2; border-color: #b6e8cb; }
+    .result-card.ko { background: #fff5f5; border-color: #f0d0d0; }
+    .result-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #777; margin-bottom: 4px; }
+    .result-sub { font-size: 14px; font-weight: 700; color: #1a1a1a; }
+    .result-value { font-size: 32px; font-weight: 700; white-space: nowrap; }
+    .result-card.ok .result-value { color: #1a7a45; }
     .result-card.ko .result-value { color: #b94040; }
+
+    /* README */
+    .readme-toggle { display: flex; align-items: center; gap: 8px; margin-top: 2rem; background: none; border: none; cursor: pointer; font-family: inherit; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #aaa; padding: 0; }
+    .readme-toggle svg { transition: transform 0.2s; }
+    .readme-toggle.open svg { transform: rotate(180deg); }
+    .readme-box { display: none; margin-top: 0.75rem; background: #fff; border: 1px solid #e8e8e2; border-radius: 14px; padding: 20px 24px; }
+    .readme-box.open { display: block; }
+    .readme-box h3 { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+    .readme-box p { font-size: 13px; font-weight: 600; color: #444; line-height: 1.65; margin-bottom: 10px; }
+    .readme-box ul { padding-left: 18px; margin-bottom: 10px; }
+    .readme-box li { font-size: 13px; font-weight: 600; color: #444; line-height: 1.7; }
+    .readme-box .pill { display: inline-block; background: #f5e400; color: #1a1a1a; font-size: 11px; font-weight: 700; border-radius: 6px; padding: 2px 7px; margin-right: 4px; }
+
+    /* MODAL */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal { background: #fff; border-radius: 18px; padding: 28px; width: 100%; max-width: 380px; margin: 1rem; box-shadow: 0 20px 60px rgba(0,0,0,0.15); transform: translateY(12px); transition: transform 0.2s; }
+    .modal-overlay.open .modal { transform: translateY(0); }
+    .modal h2 { font-size: 16px; font-weight: 800; margin-bottom: 6px; }
+    .modal p { font-size: 13px; color: #777; font-weight: 600; margin-bottom: 20px; }
+    .modal label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #aaa; display: block; margin-bottom: 6px; }
+    .modal select, .modal input[type=text] {
+      width: 100%; padding: 10px 12px; border: 1.5px solid #e0e0da;
+      border-radius: 9px; font-family: inherit; font-size: 14px; font-weight: 600;
+      background: #fafaf8; outline: none; margin-bottom: 16px;
+    }
+    .modal select:focus, .modal input[type=text]:focus { border-color: #c8ba00; }
+    .format-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+    .format-btn {
+      border: 2px solid #e0e0da; border-radius: 10px; padding: 12px;
+      text-align: center; cursor: pointer; transition: border-color 0.15s, background 0.15s;
+      background: #fff;
+    }
+    .format-btn.selected { border-color: #1a1a1a; background: #fafaf8; }
+    .format-btn .fmt-icon { font-size: 22px; margin-bottom: 4px; }
+    .format-btn .fmt-label { font-size: 13px; font-weight: 700; }
+    .format-btn .fmt-desc { font-size: 11px; color: #aaa; font-weight: 600; }
+    .modal-actions { display: flex; gap: 10px; }
+    .btn-cancel { flex: 1; padding: 11px; border: 1.5px solid #e0e0da; border-radius: 9px; background: #fff; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+    .btn-download { flex: 2; padding: 11px; border: none; border-radius: 9px; background: #1a1a1a; color: #fff; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; transition: opacity 0.15s; }
+    .btn-download:hover { opacity: 0.8; }
   </style>
 </head>
 <body>
 
   <div class="top-bar">
-    <img src="https://es.hoy-voy.com/assets/header/hoy-voy-logo.png" alt="Hoy Voy" />
-    <span class="top-bar-label">Herramienta interna</span>
+    <div class="top-bar-left">
+      <img src="https://es.hoy-voy.com/assets/header/hoy-voy-logo.png" alt="Hoy Voy" />
+      <span class="top-bar-label">Herramienta interna</span>
+    </div>
+    <button class="btn-export" onclick="openModal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Exportar
+    </button>
   </div>
 
   <div class="hero">
@@ -205,16 +138,16 @@
 
     <div class="section-label">Cálculo de reducciones</div>
     <div class="card">
-      <div class="row"><span class="row-label">Secciones adicionales (a partir de la 2ª)</span><span class="calc-val" id="b10">1,0</span></div>
-      <div class="row"><span class="row-label">Reducción por profesores (1,5h por profe)</span><span class="calc-val neg" id="b11">-15,0</span></div>
-      <div class="row"><span class="row-label">Reducción por ATT (0,5h por ATT)</span><span class="calc-val neg" id="b12">-2,0</span></div>
-      <div class="row"><span class="row-label">Reducción por secciones adicionales (1h/sección)</span><span class="calc-val neg" id="b13">-1,0</span></div>
+      <div class="row"><span class="row-label">Secciones adicionales (a partir de la 2ª)</span><span class="calc-val" id="b10">0,0</span></div>
+      <div class="row"><span class="row-label">Reducción por profesores (1,5h por profe)</span><span class="calc-val neg" id="b11">0,0</span></div>
+      <div class="row"><span class="row-label">Reducción por ATT (0,5h por ATT)</span><span class="calc-val neg" id="b12">-0,5</span></div>
+      <div class="row"><span class="row-label">Reducción por secciones adicionales (1h/sección)</span><span class="calc-val neg" id="b13">0,0</span></div>
     </div>
 
     <div class="section-label">Resultado semanal / mensual</div>
     <div class="card metrics">
-      <div class="metric"><div class="metric-label">Horas semanales</div><div class="metric-value" id="b16">14,0</div></div>
-      <div class="metric"><div class="metric-label">Horas mensuales</div><div class="metric-value" id="b17">61,6</div></div>
+      <div class="metric"><div class="metric-label">Horas semanales</div><div class="metric-value" id="b16">31,5</div></div>
+      <div class="metric"><div class="metric-label">Horas mensuales</div><div class="metric-value" id="b17">138,6</div></div>
     </div>
 
     <div class="section-label">Tareas formativas realizadas</div>
@@ -231,16 +164,94 @@
     <div id="result-card" class="result-card ko">
       <div>
         <div class="result-label">Resultado mensual</div>
-        <div class="result-sub" id="b30-sub">Quedan horas por realizar</div>
+        <div class="result-sub" id="b30-sub">Te faltan por realizar este mes</div>
       </div>
-      <div class="result-value" id="b30">-45,2 h</div>
+      <div class="result-value" id="b30">-138,6 h</div>
     </div>
 
+    <!-- README -->
+    <button class="readme-toggle" id="readme-btn" onclick="toggleReadme()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      Cómo funciona esta calculadora
+    </button>
+    <div class="readme-box" id="readme-box">
+      <h3>¿Qué calcula esta herramienta?</h3>
+      <p>Calcula las horas formativas mensuales que le corresponden a un director, en función de su estructura de centros y equipo, y las compara con las tareas formativas que ha realizado durante el mes.</p>
+
+      <h3 style="margin-top:16px;">Entradas del director</h3>
+      <ul>
+        <li><span class="pill">Centros</span> Número de centros o secciones que gestiona. A partir del 2º, cada sección adicional resta 1h semanal.</li>
+        <li><span class="pill">Profesores</span> Cada profesor activo resta 1,5h semanales al director.</li>
+        <li><span class="pill">ATT</span> Cada hora de atención al alumno resta 0,5h semanales.</li>
+      </ul>
+
+      <h3 style="margin-top:16px;">Fórmula de horas base</h3>
+      <p>El director parte de <strong>32h semanales</strong> menos todas las reducciones. Las horas mensuales se calculan como: <strong>(horas semanales ÷ 5) × 22 días laborables</strong>.</p>
+
+      <h3 style="margin-top:16px;">Peso de cada tarea realizada</h3>
+      <ul>
+        <li><span class="pill">Curso teórico</span> 16h por curso</li>
+        <li><span class="pill">Práctica</span> 0,75h por práctica</li>
+        <li><span class="pill">Masterclass</span> 2h por sesión</li>
+        <li><span class="pill">Evaluador</span> 1h por evaluación</li>
+        <li><span class="pill">Asistencia examen</span> 1h por asistencia</li>
+        <li><span class="pill">Alumno a examen</span> 0,75h por alumno</li>
+        <li><span class="pill">Festivo intersemanal</span> Descuenta (horas semanales ÷ 5) por día festivo</li>
+      </ul>
+
+      <h3 style="margin-top:16px;">Resultado final</h3>
+      <p>Si el resultado es <strong style="color:#b94040;">negativo (rojo)</strong>, faltan horas por realizar ese mes. Si es <strong style="color:#1a7a45;">positivo (verde)</strong>, el director lleva horas acumuladas de más.</p>
+    </div>
+
+  </div>
+
+  <!-- MODAL EXPORTAR -->
+  <div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
+    <div class="modal">
+      <h2>Exportar informe</h2>
+      <p>Elige el mes y el formato de exportación.</p>
+
+      <label>Mes</label>
+      <select id="export-month">
+        <option value="Enero">Enero</option>
+        <option value="Febrero">Febrero</option>
+        <option value="Marzo">Marzo</option>
+        <option value="Abril">Abril</option>
+        <option value="Mayo" selected>Mayo</option>
+        <option value="Junio">Junio</option>
+        <option value="Julio">Julio</option>
+        <option value="Agosto">Agosto</option>
+        <option value="Septiembre">Septiembre</option>
+        <option value="Octubre">Octubre</option>
+        <option value="Noviembre">Noviembre</option>
+        <option value="Diciembre">Diciembre</option>
+      </select>
+
+      <label>Formato</label>
+      <div class="format-btns">
+        <div class="format-btn selected" id="fmt-pdf" onclick="selectFmt('pdf')">
+          <div class="fmt-icon">📄</div>
+          <div class="fmt-label">PDF</div>
+          <div class="fmt-desc">Para compartir</div>
+        </div>
+        <div class="format-btn" id="fmt-xlsx" onclick="selectFmt('xlsx')">
+          <div class="fmt-icon">📊</div>
+          <div class="fmt-label">Excel</div>
+          <div class="fmt-desc">Para editar</div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+        <button class="btn-download" onclick="doExport()">Descargar</button>
+      </div>
+    </div>
   </div>
 
   <script>
     const fmt = n => n.toFixed(1).replace('.', ',');
     const val = id => parseFloat(document.getElementById(id).value) || 0;
+    let state = {};
 
     function calc() {
       const b5=val('b5'), b6=val('b6'), b7=val('b7');
@@ -257,17 +268,145 @@
       const b21=val('b21'),b22=val('b22'),b23=val('b23'),b24=val('b24'),b25=val('b25'),b26=val('b26'),b27=val('b27');
       const b30=b17-(b21*16)-(b22*0.75)-(b23*2)-b24-b25-(b26*0.75)-(b27*(b16/5));
 
-      const display = Math.abs(b30).toFixed(1).replace('.', ',') + ' h';
-      document.getElementById('b30').textContent = (b30 > 0 ? '-' : '+') + display;
-      const card=document.getElementById('result-card');
-      const sub=document.getElementById('b30-sub');
+      const display=Math.abs(b30).toFixed(1).replace('.', ',')+' h';
+      document.getElementById('b30').textContent=(b30>0?'-':'+')+display;
+      const card=document.getElementById('result-card'), sub=document.getElementById('b30-sub');
       if(b30>0){ card.className='result-card ko'; sub.textContent='Te faltan por realizar este mes'; }
       else if(b30<0){ card.className='result-card ok'; sub.textContent='Llevas acumuladas de más este mes'; }
       else { card.className='result-card ok'; sub.textContent='Justo al día ✓'; }
+
+      state={b5,b6,b7,b10,b11,b12,b13,b16,b17,b21,b22,b23,b24,b25,b26,b27,b30};
     }
 
     document.querySelectorAll('input').forEach(i=>i.addEventListener('input',calc));
     calc();
+
+    // README
+    function toggleReadme() {
+      const box=document.getElementById('readme-box'), btn=document.getElementById('readme-btn');
+      box.classList.toggle('open'); btn.classList.toggle('open');
+    }
+
+    // MODAL
+    let selectedFmt='pdf';
+    function openModal(){ document.getElementById('modal-overlay').classList.add('open'); }
+    function closeModal(){ document.getElementById('modal-overlay').classList.remove('open'); }
+    function closeModalOutside(e){ if(e.target===document.getElementById('modal-overlay')) closeModal(); }
+    function selectFmt(f){
+      selectedFmt=f;
+      document.getElementById('fmt-pdf').classList.toggle('selected',f==='pdf');
+      document.getElementById('fmt-xlsx').classList.toggle('selected',f==='xlsx');
+    }
+
+    function doExport(){
+      const month=document.getElementById('export-month').value;
+      const filename=`HorasFormativas_${month}`;
+      if(selectedFmt==='xlsx') exportXLSX(filename, month);
+      else exportPDF(filename, month);
+      closeModal();
+    }
+
+    function exportXLSX(filename, month){
+      const s=state;
+      const rows=[
+        ['Calculadora de Horas Formativas del Director — Hoy Voy',''],
+        ['Mes', month],
+        [''],
+        ['ENTRADAS',''],
+        ['Número de centros / secciones', s.b5],
+        ['Profesores activos', s.b6],
+        ['Atención al alumno (ATT)', s.b7],
+        [''],
+        ['REDUCCIONES',''],
+        ['Secciones adicionales', s.b10],
+        ['Reducción por profesores (1,5h/profe)', s.b11],
+        ['Reducción por ATT (0,5h/ATT)', s.b12],
+        ['Reducción por secciones adicionales', s.b13],
+        [''],
+        ['RESULTADO SEMANAL / MENSUAL',''],
+        ['Horas semanales', s.b16],
+        ['Horas mensuales', s.b17],
+        [''],
+        ['TAREAS REALIZADAS',''],
+        ['Cursos teóricos realizados (×16h)', s.b21],
+        ['Prácticas realizadas (×0,75h)', s.b22],
+        ['Masterclass realizadas (×2h)', s.b23],
+        ['Evaluadores realizados (×1h)', s.b24],
+        ['Asistencias a examen (×1h)', s.b25],
+        ['Alumnos subidos a examen (×0,75h)', s.b26],
+        ['Días festivos intersemanales', s.b27],
+        [''],
+        ['RESULTADO FINAL', s.b30>0 ? -Math.abs(s.b30) : Math.abs(s.b30)],
+        ['Estado', s.b30>0 ? 'Faltan horas por realizar' : s.b30<0 ? 'Horas acumuladas de más' : 'Al día'],
+      ];
+      const ws=XLSX.utils.aoa_to_sheet(rows);
+      ws['!cols']=[{wch:42},{wch:16}];
+      const wb=XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb,ws,'Informe');
+      XLSX.writeFile(wb,`${filename}.xlsx`);
+    }
+
+    function exportPDF(filename, month){
+      const s=state;
+      const resultSign=s.b30>0?'-':'+';
+      const resultVal=Math.abs(s.b30).toFixed(1).replace('.',',')+' h';
+      const resultText=s.b30>0?'Te faltan por realizar este mes':s.b30<0?'Llevas horas acumuladas de más':'Justo al día';
+      const resultColor=s.b30>0?'#b94040':'#1a7a45';
+
+      const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"/>
+      <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+      <style>
+        body{font-family:'Nunito',sans-serif;color:#1a1a1a;padding:40px;max-width:600px;margin:0 auto;}
+        .logo-row{display:flex;align-items:center;gap:12px;margin-bottom:28px;}
+        .logo-row img{width:44px;height:44px;}
+        .logo-row span{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#aaa;}
+        h1{font-size:18px;font-weight:800;text-transform:uppercase;letter-spacing:0.05em;background:#f5e400;padding:14px 18px;border-radius:10px;margin-bottom:6px;}
+        .mes{font-size:13px;font-weight:700;color:#777;margin-bottom:24px;padding-left:2px;}
+        .section{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#aaa;margin:20px 0 8px;}
+        .row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #f0f0ea;font-size:13px;font-weight:600;}
+        .row span:last-child{font-weight:700;}
+        .neg{color:#b94040;}
+        .result{margin-top:24px;border-radius:12px;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;background:${s.b30>0?'#fff5f5':'#edfaf2'};border:1px solid ${s.b30>0?'#f0d0d0':'#b6e8cb'};}
+        .result-left .label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#777;margin-bottom:4px;}
+        .result-left .sub{font-size:14px;font-weight:700;}
+        .result-value{font-size:30px;font-weight:700;color:${resultColor};}
+        .footer{margin-top:36px;font-size:11px;color:#bbb;font-weight:600;text-align:center;}
+      </style></head><body>
+      <div class="logo-row"><img src="https://es.hoy-voy.com/assets/header/hoy-voy-logo.png"/><span>Herramienta interna · Hoy Voy</span></div>
+      <h1>Horas Formativas del Director</h1>
+      <div class="mes">Informe del mes de ${month}</div>
+      <div class="section">Entradas</div>
+      <div class="row"><span>Número de centros / secciones</span><span>${s.b5}</span></div>
+      <div class="row"><span>Profesores activos</span><span>${s.b6}</span></div>
+      <div class="row"><span>Atención al alumno (ATT)</span><span>${s.b7}</span></div>
+      <div class="section">Reducciones</div>
+      <div class="row"><span>Secciones adicionales</span><span>${s.b10.toFixed(1)}</span></div>
+      <div class="row"><span>Reducción por profesores</span><span class="neg">${s.b11.toFixed(1)}</span></div>
+      <div class="row"><span>Reducción por ATT</span><span class="neg">${s.b12.toFixed(1)}</span></div>
+      <div class="row"><span>Reducción por secciones adicionales</span><span class="neg">${s.b13.toFixed(1)}</span></div>
+      <div class="section">Semanal / Mensual</div>
+      <div class="row"><span>Horas semanales</span><span>${s.b16.toFixed(1)}</span></div>
+      <div class="row"><span>Horas mensuales</span><span>${s.b17.toFixed(1)}</span></div>
+      <div class="section">Tareas realizadas</div>
+      <div class="row"><span>Cursos teóricos (×16h)</span><span>${s.b21}</span></div>
+      <div class="row"><span>Prácticas (×0,75h)</span><span>${s.b22}</span></div>
+      <div class="row"><span>Masterclass (×2h)</span><span>${s.b23}</span></div>
+      <div class="row"><span>Evaluadores (×1h)</span><span>${s.b24}</span></div>
+      <div class="row"><span>Asistencias a examen (×1h)</span><span>${s.b25}</span></div>
+      <div class="row"><span>Alumnos subidos a examen (×0,75h)</span><span>${s.b26}</span></div>
+      <div class="row"><span>Días festivos intersemanales</span><span>${s.b27}</span></div>
+      <div class="result">
+        <div class="result-left"><div class="label">Resultado mensual</div><div class="sub">${resultText}</div></div>
+        <div class="result-value">${resultSign}${resultVal}</div>
+      </div>
+      <div class="footer">Generado por la Calculadora de Horas Formativas · Hoy Voy</div>
+      </body></html>`;
+
+      const w=window.open('','_blank');
+      w.document.write(html);
+      w.document.close();
+      w.onload=()=>{ w.print(); };
+    }
   </script>
 </body>
 </html>
