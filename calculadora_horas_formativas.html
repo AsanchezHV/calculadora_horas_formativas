@@ -4,248 +4,233 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Calculadora de horas formativas · Hoy Voy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet" />
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap');
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Nunito', Arial, sans-serif;
-      background: #f5f5f0;
-      color: #111;
+      font-family: 'Nunito', sans-serif;
+      background: #fafaf8;
+      color: #1a1a1a;
       min-height: 100vh;
     }
 
     /* HEADER */
     .top-bar {
       background: #fff;
-      border-bottom: 2.5px solid #111;
-      padding: 14px 2rem;
+      border-bottom: 1px solid #e8e8e2;
+      padding: 16px 2.5rem;
       display: flex;
       align-items: center;
       gap: 14px;
     }
-    .top-bar img { width: 52px; height: 52px; }
-    .top-bar-text { display: flex; flex-direction: column; }
-    .top-bar-text span:first-child {
-      font-size: 11px;
+    .top-bar img { width: 44px; height: 44px; }
+    .top-bar-label {
+      font-size: 12px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: #888;
-    }
-    .top-bar-text span:last-child {
-      font-size: 16px;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.12em;
+      color: #aaa;
     }
 
-    /* HERO BAND */
+    /* HERO */
     .hero {
-      background: #FFEE00;
-      border-bottom: 2.5px solid #111;
-      padding: 20px 2rem;
+      background: #f5e400;
+      padding: 28px 2.5rem 24px;
+      border-bottom: 1px solid #e0d000;
     }
     .hero h1 {
-      font-size: clamp(20px, 4vw, 28px);
+      font-size: clamp(18px, 3vw, 24px);
       font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.06em;
+      color: #1a1a1a;
     }
     .hero p {
       font-size: 13px;
-      font-weight: 700;
-      margin-top: 4px;
-      color: #333;
+      font-weight: 600;
+      color: #555;
+      margin-top: 5px;
     }
 
     /* MAIN */
-    .main { max-width: 660px; margin: 2rem auto; padding: 0 1rem 3rem; }
+    .main { max-width: 600px; margin: 2.5rem auto; padding: 0 1.5rem 4rem; }
+
+    /* SECTION LABEL */
+    .section-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #aaa;
+      margin: 2rem 0 0.6rem;
+    }
 
     /* CARD */
     .card {
       background: #fff;
-      border: 2.5px solid #111;
-      border-radius: 16px;
+      border: 1px solid #e8e8e2;
+      border-radius: 14px;
       overflow: hidden;
-      margin-bottom: 1.25rem;
     }
-    .card-header {
-      background: #111;
-      color: #FFEE00;
-      font-size: 11px;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      padding: 8px 16px;
-    }
-    .card-body { padding: 0 16px; }
 
     /* ROWS */
     .row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 11px 0;
-      border-bottom: 1.5px solid #f0f0ea;
-      gap: 12px;
+      padding: 13px 20px;
+      border-bottom: 1px solid #f0f0ea;
+      gap: 16px;
     }
     .row:last-child { border-bottom: none; }
-    .row label, .row .row-label {
+    .row-label {
       font-size: 14px;
-      font-weight: 700;
+      font-weight: 600;
+      color: #333;
       flex: 1;
     }
     .row input {
-      width: 88px;
+      width: 80px;
       text-align: right;
       font-size: 15px;
-      font-weight: 900;
+      font-weight: 700;
       font-family: inherit;
       padding: 6px 10px;
-      border: 2px solid #111;
+      border: 1.5px solid #ddd;
       border-radius: 8px;
-      background: #FFEE00;
-      color: #111;
+      background: #fffbe6;
+      color: #1a1a1a;
       outline: none;
-      transition: box-shadow 0.15s;
+      transition: border-color 0.15s, box-shadow 0.15s;
     }
-    .row input:focus { box-shadow: 0 0 0 3px rgba(0,0,0,0.15); }
-    .row .calc-val {
-      font-size: 15px;
-      font-weight: 900;
-      min-width: 64px;
+    .row input:focus {
+      border-color: #c8ba00;
+      box-shadow: 0 0 0 3px rgba(200,186,0,0.12);
+    }
+    .calc-val {
+      font-size: 14px;
+      font-weight: 700;
+      min-width: 56px;
       text-align: right;
+      color: #1a1a1a;
     }
-    .row .calc-val.neg { color: #c0392b; }
-    .row .calc-val.pos { color: #111; }
+    .calc-val.neg { color: #b94040; }
 
     /* METRICS */
     .metrics {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      padding: 16px;
     }
     .metric {
-      border: 2.5px solid #111;
-      border-radius: 12px;
-      padding: 14px 16px;
-      background: #f5f5f0;
+      padding: 20px;
     }
+    .metric:first-child { border-right: 1px solid #f0f0ea; }
     .metric-label {
       font-size: 11px;
-      font-weight: 900;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #666;
-      margin-bottom: 4px;
+      letter-spacing: 0.1em;
+      color: #aaa;
+      margin-bottom: 6px;
     }
     .metric-value {
-      font-size: 26px;
+      font-size: 28px;
       font-weight: 900;
+      color: #1a1a1a;
     }
 
     /* RESULT */
     .result-card {
-      border: 2.5px solid #111;
-      border-radius: 16px;
-      padding: 20px 24px;
+      border-radius: 14px;
+      padding: 22px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      transition: background 0.2s;
+      border: 1px solid transparent;
+      margin-top: 1.25rem;
+      transition: background 0.2s, border-color 0.2s;
     }
-    .result-card.ok { background: #FFEE00; }
-    .result-card.ko { background: #fff0f0; }
+    .result-card.ok {
+      background: #f5e400;
+      border-color: #e0d000;
+    }
+    .result-card.ko {
+      background: #fff5f5;
+      border-color: #f0d0d0;
+    }
     .result-label {
-      font-size: 13px;
-      font-weight: 900;
+      font-size: 11px;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #111;
+      letter-spacing: 0.12em;
+      color: #555;
       margin-bottom: 4px;
     }
     .result-sub {
-      font-size: 12px;
+      font-size: 14px;
       font-weight: 700;
-      color: #444;
+      color: #1a1a1a;
     }
     .result-value {
-      font-size: 36px;
+      font-size: 34px;
       font-weight: 900;
       white-space: nowrap;
     }
-    .result-card.ok .result-value { color: #111; }
-    .result-card.ko .result-value { color: #c0392b; }
+    .result-card.ok .result-value { color: #1a1a1a; }
+    .result-card.ko .result-value { color: #b94040; }
   </style>
 </head>
 <body>
 
   <div class="top-bar">
     <img src="https://es.hoy-voy.com/assets/header/hoy-voy-logo.png" alt="Hoy Voy" />
-    <div class="top-bar-text">
-      <span>Herramienta interna</span>
-      <span>Backoffice · Hoy Voy</span>
-    </div>
+    <span class="top-bar-label">Herramienta interna</span>
   </div>
 
   <div class="hero">
     <h1>Calculadora de horas formativas del director</h1>
-    <p>Introduce los datos. Los cálculos se actualizan automáticamente.</p>
+    <p>Introduce los datos en los campos editables. Los cálculos se actualizan automáticamente.</p>
   </div>
 
   <div class="main">
 
-    <!-- ENTRADAS -->
+    <div class="section-label">Entradas</div>
     <div class="card">
-      <div class="card-header">Entradas</div>
-      <div class="card-body">
-        <div class="row"><label>Número de centros / secciones</label><input type="number" id="b5" value="2" min="1" step="1" /></div>
-        <div class="row"><label>Profesores activos</label><input type="number" id="b6" value="10" min="0" step="1" /></div>
-        <div class="row"><label>Atención al alumno (ATT)</label><input type="number" id="b7" value="4" min="0" step="1" /></div>
-      </div>
+      <div class="row"><span class="row-label">Número de centros / secciones</span><input type="number" id="b5" value="2" min="1" step="1" /></div>
+      <div class="row"><span class="row-label">Profesores activos</span><input type="number" id="b6" value="10" min="0" step="1" /></div>
+      <div class="row"><span class="row-label">Atención al alumno (ATT)</span><input type="number" id="b7" value="4" min="0" step="1" /></div>
     </div>
 
-    <!-- REDUCCIONES -->
+    <div class="section-label">Cálculo de reducciones</div>
     <div class="card">
-      <div class="card-header">Cálculo de reducciones</div>
-      <div class="card-body">
-        <div class="row"><span class="row-label">Secciones adicionales (a partir de la 2ª)</span><span class="calc-val" id="b10">1,0</span></div>
-        <div class="row"><span class="row-label">Reducción por profesores (1,5h por profe)</span><span class="calc-val neg" id="b11">-15,0</span></div>
-        <div class="row"><span class="row-label">Reducción por ATT (0,5h por ATT)</span><span class="calc-val neg" id="b12">-2,0</span></div>
-        <div class="row"><span class="row-label">Reducción por secciones adicionales (1h/sección)</span><span class="calc-val neg" id="b13">-1,0</span></div>
-      </div>
+      <div class="row"><span class="row-label">Secciones adicionales (a partir de la 2ª)</span><span class="calc-val" id="b10">1,0</span></div>
+      <div class="row"><span class="row-label">Reducción por profesores (1,5h por profe)</span><span class="calc-val neg" id="b11">-15,0</span></div>
+      <div class="row"><span class="row-label">Reducción por ATT (0,5h por ATT)</span><span class="calc-val neg" id="b12">-2,0</span></div>
+      <div class="row"><span class="row-label">Reducción por secciones adicionales (1h/sección)</span><span class="calc-val neg" id="b13">-1,0</span></div>
     </div>
 
-    <!-- MÉTRICAS -->
-    <div class="card">
-      <div class="card-header">Resultado semanal / mensual</div>
-      <div class="metrics">
-        <div class="metric"><div class="metric-label">Horas semanales</div><div class="metric-value" id="b16">14,0</div></div>
-        <div class="metric"><div class="metric-label">Horas mensuales</div><div class="metric-value" id="b17">61,6</div></div>
-      </div>
+    <div class="section-label">Resultado semanal / mensual</div>
+    <div class="card metrics">
+      <div class="metric"><div class="metric-label">Horas semanales</div><div class="metric-value" id="b16">14,0</div></div>
+      <div class="metric"><div class="metric-label">Horas mensuales</div><div class="metric-value" id="b17">61,6</div></div>
     </div>
 
-    <!-- TAREAS -->
+    <div class="section-label">Tareas formativas realizadas</div>
     <div class="card">
-      <div class="card-header">Tareas formativas realizadas</div>
-      <div class="card-body">
-        <div class="row"><label>Cursos teóricos realizados</label><input type="number" id="b21" value="1" min="0" step="1" /></div>
-        <div class="row"><label>Prácticas realizadas</label><input type="number" id="b22" value="90" min="0" step="1" /></div>
-        <div class="row"><label>Masterclass realizadas</label><input type="number" id="b23" value="1" min="0" step="1" /></div>
-        <div class="row"><label>Evaluadores realizados</label><input type="number" id="b24" value="1" min="0" step="1" /></div>
-        <div class="row"><label>Asistencias a examen</label><input type="number" id="b25" value="1" min="0" step="1" /></div>
-        <div class="row"><label>Alumnos subidos a examen</label><input type="number" id="b26" value="7" min="0" step="1" /></div>
-        <div class="row"><label>Días festivos intersemanales</label><input type="number" id="b27" value="5" min="0" step="1" /></div>
-      </div>
+      <div class="row"><span class="row-label">Cursos teóricos realizados</span><input type="number" id="b21" value="1" min="0" step="1" /></div>
+      <div class="row"><span class="row-label">Prácticas realizadas</span><input type="number" id="b22" value="90" min="0" step="1" /></div>
+      <div class="row"><span class="row-label">Masterclass realizadas</span><input type="number" id="b23" value="1" min="0" step="1" /></div>
+      <div class="row"><span class="row-label">Evaluadores realizados</span><input type="number" id="b24" value="1" min="0" step="1" /></div>
+      <div class="row"><span class="row-label">Asistencias a examen</span><input type="number" id="b25" value="1" min="0" step="1" /></div>
+      <div class="row"><span class="row-label">Alumnos subidos a examen</span><input type="number" id="b26" value="7" min="0" step="1" /></div>
+      <div class="row"><span class="row-label">Días festivos intersemanales</span><input type="number" id="b27" value="5" min="0" step="1" /></div>
     </div>
 
-    <!-- RESULTADO FINAL -->
     <div id="result-card" class="result-card ko">
       <div>
-        <div class="result-label">Resultado mensual final</div>
+        <div class="result-label">Resultado mensual</div>
         <div class="result-sub" id="b30-sub">Quedan horas por realizar</div>
       </div>
       <div class="result-value" id="b30">-45,2 h</div>
@@ -258,43 +243,30 @@
     const val = id => parseFloat(document.getElementById(id).value) || 0;
 
     function calc() {
-      const b5 = val('b5'), b6 = val('b6'), b7 = val('b7');
-      const b10 = Math.max(b5 - 1, 0);
-      const b11 = -1.5 * b6;
-      const b12 = -0.5 * b7;
-      const b13 = b10 * -1;
-      const b16 = 32 + b11 + b12 + b13;
-      const b17 = (b16 / 5) * 22;
+      const b5=val('b5'), b6=val('b6'), b7=val('b7');
+      const b10=Math.max(b5-1,0), b11=-1.5*b6, b12=-0.5*b7, b13=b10*-1;
+      const b16=32+b11+b12+b13, b17=(b16/5)*22;
 
-      document.getElementById('b10').textContent = fmt(b10);
-      document.getElementById('b11').textContent = fmt(b11);
-      document.getElementById('b12').textContent = fmt(b12);
-      document.getElementById('b13').textContent = fmt(b13);
-      document.getElementById('b16').textContent = fmt(b16);
-      document.getElementById('b17').textContent = fmt(b17);
+      document.getElementById('b10').textContent=fmt(b10);
+      document.getElementById('b11').textContent=fmt(b11);
+      document.getElementById('b12').textContent=fmt(b12);
+      document.getElementById('b13').textContent=fmt(b13);
+      document.getElementById('b16').textContent=fmt(b16);
+      document.getElementById('b17').textContent=fmt(b17);
 
-      const b21=val('b21'),b22=val('b22'),b23=val('b23');
-      const b24=val('b24'),b25=val('b25'),b26=val('b26'),b27=val('b27');
-      const b30 = b17-(b21*16)-(b22*0.75)-(b23*2)-b24-b25-(b26*0.75)-(b27*(b16/5));
+      const b21=val('b21'),b22=val('b22'),b23=val('b23'),b24=val('b24'),b25=val('b25'),b26=val('b26'),b27=val('b27');
+      const b30=b17-(b21*16)-(b22*0.75)-(b23*2)-b24-b25-(b26*0.75)-(b27*(b16/5));
 
-      document.getElementById('b30').textContent = fmt(b30) + ' h';
-      const card = document.getElementById('result-card');
-      const sub = document.getElementById('b30-sub');
-      if (b30 > 0) {
-        card.className = 'result-card ko';
-        sub.textContent = 'Quedan horas por realizar';
-      } else if (b30 < 0) {
-        card.className = 'result-card ok';
-        sub.textContent = 'Se ha pasado de horas';
-      } else {
-        card.className = 'result-card ok';
-        sub.textContent = 'Justo al día ✓';
-      }
+      document.getElementById('b30').textContent=fmt(b30)+' h';
+      const card=document.getElementById('result-card');
+      const sub=document.getElementById('b30-sub');
+      if(b30>0){ card.className='result-card ko'; sub.textContent='Quedan horas por realizar'; }
+      else if(b30<0){ card.className='result-card ok'; sub.textContent='Se ha pasado de horas'; }
+      else { card.className='result-card ok'; sub.textContent='Justo al día ✓'; }
     }
 
-    document.querySelectorAll('input').forEach(i => i.addEventListener('input', calc));
+    document.querySelectorAll('input').forEach(i=>i.addEventListener('input',calc));
     calc();
   </script>
-
 </body>
 </html>
