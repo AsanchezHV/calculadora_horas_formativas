@@ -356,45 +356,57 @@
       const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"/>
       <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
       <style>
-        body{font-family:'Nunito',sans-serif;color:#1a1a1a;padding:40px;max-width:600px;margin:0 auto;}
-        .logo-row{display:flex;align-items:center;gap:12px;margin-bottom:28px;}
-        .logo-row img{width:44px;height:44px;}
-        .logo-row span{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#aaa;}
-        h1{font-size:18px;font-weight:800;text-transform:uppercase;letter-spacing:0.05em;background:#f5e400;padding:14px 18px;border-radius:10px;margin-bottom:6px;}
-        .mes{font-size:13px;font-weight:700;color:#777;margin-bottom:24px;padding-left:2px;}
-        .section{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#aaa;margin:20px 0 8px;}
-        .row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #f0f0ea;font-size:13px;font-weight:600;}
+        *{box-sizing:border-box;margin:0;padding:0;}
+        body{font-family:'Nunito',sans-serif;color:#1a1a1a;padding:24px 32px;width:210mm;min-height:297mm;}
+        .logo-row{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+        .logo-row img{width:36px;height:36px;}
+        .logo-row span{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#aaa;}
+        h1{font-size:15px;font-weight:800;text-transform:uppercase;letter-spacing:0.05em;background:#f5e400;padding:10px 14px;border-radius:8px;margin-bottom:4px;}
+        .mes{font-size:12px;font-weight:700;color:#777;margin-bottom:16px;padding-left:2px;}
+        .cols{display:grid;grid-template-columns:1fr 1fr;gap:0 24px;}
+        .section{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#aaa;margin:14px 0 6px;}
+        .row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0f0ea;font-size:12px;font-weight:600;}
         .row span:last-child{font-weight:700;}
         .neg{color:#b94040;}
-        .result{margin-top:24px;border-radius:12px;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;background:${s.b30>0?'#fff5f5':'#edfaf2'};border:1px solid ${s.b30>0?'#f0d0d0':'#b6e8cb'};}
-        .result-left .label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#777;margin-bottom:4px;}
-        .result-left .sub{font-size:14px;font-weight:700;}
-        .result-value{font-size:30px;font-weight:700;color:${resultColor};}
-        .footer{margin-top:36px;font-size:11px;color:#bbb;font-weight:600;text-align:center;}
+        .result{margin-top:16px;border-radius:10px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;background:${s.b30>0?'#fff5f5':'#edfaf2'};border:1px solid ${s.b30>0?'#f0d0d0':'#b6e8cb'};}
+        .result-left .label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#777;margin-bottom:3px;}
+        .result-left .sub{font-size:13px;font-weight:700;}
+        .result-value{font-size:26px;font-weight:700;color:${resultColor};}
+        .footer{margin-top:20px;font-size:10px;color:#bbb;font-weight:600;text-align:center;}
+        @media print{
+          @page{size:A4;margin:0;}
+          body{padding:18px 28px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+        }
       </style></head><body>
       <div class="logo-row"><img src="https://es.hoy-voy.com/assets/header/hoy-voy-logo.png"/><span>Herramienta interna · Hoy Voy</span></div>
       <h1>Horas Formativas del Director</h1>
       <div class="mes">Informe del mes de ${month}</div>
-      <div class="section">Entradas</div>
-      <div class="row"><span>Número de centros / secciones</span><span>${s.b5}</span></div>
-      <div class="row"><span>Profesores activos</span><span>${s.b6}</span></div>
-      <div class="row"><span>Atención al alumno (ATT)</span><span>${s.b7}</span></div>
-      <div class="section">Reducciones</div>
-      <div class="row"><span>Secciones adicionales</span><span>${s.b10.toFixed(1)}</span></div>
-      <div class="row"><span>Reducción por profesores</span><span class="neg">${s.b11.toFixed(1)}</span></div>
-      <div class="row"><span>Reducción por ATT</span><span class="neg">${s.b12.toFixed(1)}</span></div>
-      <div class="row"><span>Reducción por secciones adicionales</span><span class="neg">${s.b13.toFixed(1)}</span></div>
-      <div class="section">Semanal / Mensual</div>
-      <div class="row"><span>Horas semanales</span><span>${s.b16.toFixed(1)}</span></div>
-      <div class="row"><span>Horas mensuales</span><span>${s.b17.toFixed(1)}</span></div>
-      <div class="section">Tareas realizadas</div>
-      <div class="row"><span>Cursos teóricos (×16h)</span><span>${s.b21}</span></div>
-      <div class="row"><span>Prácticas (×0,75h)</span><span>${s.b22}</span></div>
-      <div class="row"><span>Masterclass (×2h)</span><span>${s.b23}</span></div>
-      <div class="row"><span>Evaluadores (×1h)</span><span>${s.b24}</span></div>
-      <div class="row"><span>Asistencias a examen (×1h)</span><span>${s.b25}</span></div>
-      <div class="row"><span>Alumnos subidos a examen (×0,75h)</span><span>${s.b26}</span></div>
-      <div class="row"><span>Días festivos intersemanales</span><span>${s.b27}</span></div>
+      <div class="cols">
+        <div>
+          <div class="section">Entradas</div>
+          <div class="row"><span>Centros / secciones</span><span>${s.b5}</span></div>
+          <div class="row"><span>Profesores activos</span><span>${s.b6}</span></div>
+          <div class="row"><span>ATT</span><span>${s.b7}</span></div>
+          <div class="section">Reducciones</div>
+          <div class="row"><span>Secciones adicionales</span><span>${s.b10.toFixed(1)}</span></div>
+          <div class="row"><span>Por profesores</span><span class="neg">${s.b11.toFixed(1)}</span></div>
+          <div class="row"><span>Por ATT</span><span class="neg">${s.b12.toFixed(1)}</span></div>
+          <div class="row"><span>Por secciones</span><span class="neg">${s.b13.toFixed(1)}</span></div>
+          <div class="section">Resultado</div>
+          <div class="row"><span>Horas semanales</span><span>${s.b16.toFixed(1)}</span></div>
+          <div class="row"><span>Horas mensuales</span><span>${s.b17.toFixed(1)}</span></div>
+        </div>
+        <div>
+          <div class="section">Tareas realizadas</div>
+          <div class="row"><span>Cursos teóricos (×16h)</span><span>${s.b21}</span></div>
+          <div class="row"><span>Prácticas (×0,75h)</span><span>${s.b22}</span></div>
+          <div class="row"><span>Masterclass (×2h)</span><span>${s.b23}</span></div>
+          <div class="row"><span>Evaluadores (×1h)</span><span>${s.b24}</span></div>
+          <div class="row"><span>Asistencias examen (×1h)</span><span>${s.b25}</span></div>
+          <div class="row"><span>Alumnos a examen (×0,75h)</span><span>${s.b26}</span></div>
+          <div class="row"><span>Días festivos</span><span>${s.b27}</span></div>
+        </div>
+      </div>
       <div class="result">
         <div class="result-left"><div class="label">Resultado mensual</div><div class="sub">${resultText}</div></div>
         <div class="result-value">${resultSign}${resultVal}</div>
