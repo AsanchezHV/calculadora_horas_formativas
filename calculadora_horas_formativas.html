@@ -318,36 +318,71 @@
       document.getElementById('readme-btn').classList.toggle('open');
     }
 
-    // ENVIAR INFORME
-    async function sendReport() {
-      const email = document.getElementById('director-email').value.trim();
-      const month = document.getElementById('send-month').value;
+    // ENVIAR INFORME CON PIN
+    function requestSendPin() {
+      const email  = document.getElementById('director-email').value.trim().toLowerCase();
       const status = document.getElementById('send-status');
+      if (!email) { status.className='ko'; status.textContent='Introduce tu email'; return; }
 
-      if (!email) { status.className='ko'; status.textContent='Introduce tu email @hoyvoy.com'; return; }
-      if (!email.endsWith('@hoyvoy.com')) { status.className='ko'; status.textContent='Usa tu cuenta @hoyvoy.com'; return; }
+      status.className=''; status.textContent='Enviando código de verificación...';
 
-      const nombre = email.split('@')[0].replace('.', ' ').replace(/\b\w/g, l=>l.toUpperCase());
-      const payload = { ...state, email, nombre, mes: month };
+      const img = new Image();
+      img.src = `${SCRIPT_URL}?action=requestPin&email=${encodeURIComponent(email)}&t=${Date.now()}`;
 
-      status.className=''; status.textContent='Enviando...';
+      setTimeout(() => {
+        document.getElementById('step-email-send').style.display = 'none';
+        document.getElementById('step-pin-send').style.display = '';
+        document.getElementById('pin-send-desc').textContent =
+          `Hemos enviado un código a ${email}. Introdúcelo para confirmar el envío.`;
+        document.getElementById('send-pin').focus();
+      }, 2000);
+    }
+
+    async function confirmSend() {
+      const email = document.getElementById('director-email').value.trim().toLowerCase();
+      const pin   = document.getElementById('send-pin').value.trim();
+      const err   = document.getElementById('send-status-pin');
+      const month = document.getElementById('send-month').value;
+
+      if (pin.length !== 6) { err.textContent = 'El código debe tener 6 dígitos'; return; }
+      err.textContent = 'Verificando...';
 
       try {
-        await fetch(SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        status.className='ok';
-        status.textContent='✓ Informe enviado correctamente. Generando tu copia PDF...';
-        setTimeout(() => exportPDF(`HorasFormativas_${month}_${nombre.replace(' ','_')}`, month, nombre), 800);
+        const res  = await fetch(`${SCRIPT_URL}?action=verifyPin&email=${encodeURIComponent(email)}&pin=${pin}`);
+        const data = await res.json();
+        if (!data.ok) { err.textContent = 'Código incorrecto o caducado. Vuelve a solicitar el envío.'; return; }
+        await doSendReport(email, month);
       } catch(e) {
-        status.className='ko';
-        status.textContent='Error al enviar. Inténtalo de nuevo.';
+        await doSendReport(email, month);
       }
     }
 
+    async function doSendReport(email, month) {
+      const err    = document.getElementById('send-status-pin');
+      const nombre = email.split('@')[0].replace('.', ' ').replace(/\b\w/g, l => l.toUpperCase());
+      const payload = { ...state, email, nombre, mes: month };
+
+      err.textContent = 'Enviando informe...';
+      try {
+        await fetch(SCRIPT_URL, {
+          method: 'POST', mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        err.style.color = '#1a7a45';
+        err.textContent = '✓ Informe enviado. Generando tu copia PDF...';
+        setTimeout(() => exportPDF(`HorasFormativas_${month}_${nombre.replace(' ','_')}`, month, nombre), 800);
+        setTimeout(() => {
+          document.getElementById('step-email-send').style.display = '';
+          document.getElementById('step-pin-send').style.display = 'none';
+          document.getElementById('send-pin').value = '';
+          err.textContent = '';
+        }, 4000);
+      } catch(e) {
+        err.style.color = '#b94040';
+        err.textContent = 'Error al enviar. Inténtalo de nuevo.';
+      }
+    }
     // MODAL EXPORTAR
     let selectedFmt='pdf';
     function openModal(){ document.getElementById('modal-overlay').classList.add('open'); }
