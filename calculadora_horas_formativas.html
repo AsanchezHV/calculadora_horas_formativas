@@ -10,54 +10,46 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Nunito', sans-serif; background: #fafaf8; color: #1a1a1a; min-height: 100vh; }
 
-    /* HEADER */
-    .top-bar { background: #fff; border-bottom: 1px solid #e8e8e2; padding: 14px 2.5rem; display: flex; align-items: center; justify-content: space-between; }
+    .top-bar { background: #fff; border-bottom: 1px solid #e8e8e2; padding: 14px 2.5rem; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
     .top-bar-left { display: flex; align-items: center; gap: 12px; }
     .top-bar img { width: 42px; height: 42px; }
     .top-bar-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #aaa; }
-    .btn-export {
-      display: flex; align-items: center; gap: 7px;
-      background: #1a1a1a; color: #fff;
-      border: none; border-radius: 8px;
-      padding: 9px 16px; font-size: 13px; font-weight: 700;
-      font-family: inherit; cursor: pointer; transition: opacity 0.15s;
-    }
-    .btn-export:hover { opacity: 0.8; }
-    .btn-export svg { width: 15px; height: 15px; }
+    .top-bar-right { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 
-    /* HERO */
+    .btn { display: flex; align-items: center; gap: 7px; border: none; border-radius: 8px; padding: 9px 16px; font-size: 13px; font-weight: 700; font-family: inherit; cursor: pointer; transition: opacity 0.15s; }
+    .btn:hover { opacity: 0.8; }
+    .btn-dark { background: #1a1a1a; color: #fff; }
+    .btn-yellow { background: #f5e400; color: #1a1a1a; }
+    .btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+
     .hero { background: #f5e400; padding: 26px 2.5rem 22px; border-bottom: 1px solid #e0d000; }
     .hero h1 { font-size: clamp(17px, 3vw, 22px); font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; }
     .hero p { font-size: 13px; font-weight: 600; color: #555; margin-top: 5px; }
 
-    /* MAIN */
     .main { max-width: 600px; margin: 2.5rem auto; padding: 0 1.5rem 4rem; }
     .section-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: #aaa; margin: 2rem 0 0.6rem; }
 
-    /* CARD */
     .card { background: #fff; border: 1px solid #e8e8e2; border-radius: 14px; overflow: hidden; }
     .row { display: flex; align-items: center; justify-content: space-between; padding: 13px 20px; border-bottom: 1px solid #f0f0ea; gap: 16px; }
     .row:last-child { border-bottom: none; }
     .row-label { font-size: 14px; font-weight: 600; color: #333; flex: 1; }
-    .row input {
+    .row input[type=number] {
       width: 80px; text-align: right; font-size: 15px; font-weight: 700;
       font-family: inherit; padding: 6px 10px;
       border: 1.5px solid #ddd; border-radius: 8px;
       background: #fffbe6; color: #1a1a1a; outline: none;
       transition: border-color 0.15s, box-shadow 0.15s;
     }
-    .row input:focus { border-color: #c8ba00; box-shadow: 0 0 0 3px rgba(200,186,0,0.12); }
+    .row input[type=number]:focus { border-color: #c8ba00; box-shadow: 0 0 0 3px rgba(200,186,0,0.12); }
     .calc-val { font-size: 14px; font-weight: 700; min-width: 56px; text-align: right; color: #1a1a1a; }
     .calc-val.neg { color: #b94040; }
 
-    /* METRICS */
     .metrics { display: grid; grid-template-columns: 1fr 1fr; }
     .metric { padding: 20px; }
     .metric:first-child { border-right: 1px solid #f0f0ea; }
     .metric-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #aaa; margin-bottom: 6px; }
     .metric-value { font-size: 26px; font-weight: 700; color: #1a1a1a; }
 
-    /* RESULT */
     .result-card { border-radius: 14px; padding: 22px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; border: 1px solid transparent; margin-top: 1.25rem; transition: background 0.2s, border-color 0.2s; }
     .result-card.ok { background: #edfaf2; border-color: #b6e8cb; }
     .result-card.ko { background: #fff5f5; border-color: #f0d0d0; }
@@ -67,7 +59,34 @@
     .result-card.ok .result-value { color: #1a7a45; }
     .result-card.ko .result-value { color: #b94040; }
 
-    /* README */
+    .send-bar { margin-top: 1.5rem; background: #fff; border: 1px solid #e8e8e2; border-radius: 14px; padding: 20px; }
+    .send-bar p { font-size: 13px; font-weight: 600; color: #555; margin-bottom: 14px; }
+    .send-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .send-row input[type=email] {
+      flex: 1; min-width: 200px; padding: 10px 14px;
+      border: 1.5px solid #ddd; border-radius: 9px;
+      font-family: inherit; font-size: 14px; font-weight: 600;
+      background: #fafaf8; outline: none; transition: border-color 0.15s;
+    }
+    .send-row input[type=email]:focus { border-color: #c8ba00; }
+    .send-row select {
+      padding: 10px 12px; border: 1.5px solid #ddd; border-radius: 9px;
+      font-family: inherit; font-size: 14px; font-weight: 600;
+      background: #fafaf8; outline: none;
+    }
+    #send-status { font-size: 13px; font-weight: 700; margin-top: 10px; min-height: 20px; }
+    #send-status.ok { color: #1a7a45; }
+    #send-status.ko { color: #b94040; }
+    .pin-step { display: none; margin-top: 12px; }
+    .pin-step input {
+      width: 100%; padding: 12px; font-size: 24px; font-weight: 800;
+      letter-spacing: 0.3em; text-align: center;
+      border: 1.5px solid #c8ba00; border-radius: 9px;
+      background: #fffbe6; font-family: inherit; outline: none;
+      margin-bottom: 10px;
+    }
+    .pin-step p { font-size: 12px; color: #888; margin-bottom: 10px; }
+
     .readme-toggle { display: flex; align-items: center; gap: 8px; margin-top: 2rem; background: none; border: none; cursor: pointer; font-family: inherit; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #aaa; padding: 0; }
     .readme-toggle svg { transition: transform 0.2s; }
     .readme-toggle.open svg { transform: rotate(180deg); }
@@ -79,7 +98,7 @@
     .readme-box li { font-size: 13px; font-weight: 600; color: #444; line-height: 1.7; }
     .readme-box .pill { display: inline-block; background: #f5e400; color: #1a1a1a; font-size: 11px; font-weight: 700; border-radius: 6px; padding: 2px 7px; margin-right: 4px; }
 
-    /* MODAL */
+    /* MODAL EXPORTAR */
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
     .modal-overlay.open { opacity: 1; pointer-events: all; }
     .modal { background: #fff; border-radius: 18px; padding: 28px; width: 100%; max-width: 380px; margin: 1rem; box-shadow: 0 20px 60px rgba(0,0,0,0.15); transform: translateY(12px); transition: transform 0.2s; }
@@ -87,18 +106,9 @@
     .modal h2 { font-size: 16px; font-weight: 800; margin-bottom: 6px; }
     .modal p { font-size: 13px; color: #777; font-weight: 600; margin-bottom: 20px; }
     .modal label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #aaa; display: block; margin-bottom: 6px; }
-    .modal select, .modal input[type=text] {
-      width: 100%; padding: 10px 12px; border: 1.5px solid #e0e0da;
-      border-radius: 9px; font-family: inherit; font-size: 14px; font-weight: 600;
-      background: #fafaf8; outline: none; margin-bottom: 16px;
-    }
-    .modal select:focus, .modal input[type=text]:focus { border-color: #c8ba00; }
+    .modal select { width: 100%; padding: 10px 12px; border: 1.5px solid #e0e0da; border-radius: 9px; font-family: inherit; font-size: 14px; font-weight: 600; background: #fafaf8; outline: none; margin-bottom: 16px; }
     .format-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-    .format-btn {
-      border: 2px solid #e0e0da; border-radius: 10px; padding: 12px;
-      text-align: center; cursor: pointer; transition: border-color 0.15s, background 0.15s;
-      background: #fff;
-    }
+    .format-btn { border: 2px solid #e0e0da; border-radius: 10px; padding: 12px; text-align: center; cursor: pointer; transition: border-color 0.15s, background 0.15s; background: #fff; }
     .format-btn.selected { border-color: #1a1a1a; background: #fafaf8; }
     .format-btn .fmt-icon { font-size: 22px; margin-bottom: 4px; }
     .format-btn .fmt-label { font-size: 13px; font-weight: 700; }
@@ -116,10 +126,12 @@
       <img src="https://es.hoy-voy.com/assets/header/hoy-voy-logo.png" alt="Hoy Voy" />
       <span class="top-bar-label">Herramienta interna</span>
     </div>
-    <button class="btn-export" onclick="openModal()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      Exportar
-    </button>
+    <div class="top-bar-right">
+      <button class="btn btn-dark" onclick="openModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Exportar
+      </button>
+    </div>
   </div>
 
   <div class="hero">
@@ -169,6 +181,41 @@
       <div class="result-value" id="b30">-138,6 h</div>
     </div>
 
+    <!-- ENVIAR INFORME -->
+    <div class="send-bar">
+      <p>Envía tu informe mensual a dirección. Se registrará automáticamente y recibirás una copia en PDF.</p>
+      <div id="step-email-send">
+        <div class="send-row">
+          <input type="email" id="director-email" placeholder="tunombre@hoyvoy.com" />
+          <select id="send-month">
+            <option value="Enero">Enero</option>
+            <option value="Febrero">Febrero</option>
+            <option value="Marzo">Marzo</option>
+            <option value="Abril">Abril</option>
+            <option value="Mayo" selected>Mayo</option>
+            <option value="Junio">Junio</option>
+            <option value="Julio">Julio</option>
+            <option value="Agosto">Agosto</option>
+            <option value="Septiembre">Septiembre</option>
+            <option value="Octubre">Octubre</option>
+            <option value="Noviembre">Noviembre</option>
+            <option value="Diciembre">Diciembre</option>
+          </select>
+          <button class="btn btn-yellow" onclick="requestSendPin()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Enviar informe
+          </button>
+        </div>
+        <div id="send-status"></div>
+      </div>
+      <div class="pin-step" id="step-pin-send">
+        <p id="pin-send-desc">Hemos enviado un código de verificación a tu email. Introdúcelo para confirmar el envío.</p>
+        <input type="text" id="send-pin" placeholder="000000" maxlength="6" inputmode="numeric" />
+        <button class="btn btn-dark" style="width:100%" onclick="confirmSend()">Confirmar y enviar</button>
+        <div id="send-status-pin" style="font-size:13px;font-weight:700;color:#b94040;margin-top:8px;"></div>
+      </div>
+    </div>
+
     <!-- README -->
     <button class="readme-toggle" id="readme-btn" onclick="toggleReadme()">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
@@ -176,31 +223,27 @@
     </button>
     <div class="readme-box" id="readme-box">
       <h3>¿Qué calcula esta herramienta?</h3>
-      <p>Calcula las horas formativas mensuales que le corresponden a un director, en función de su estructura de centros y equipo, y las compara con las tareas formativas que ha realizado durante el mes.</p>
-
+      <p>Calcula las horas formativas mensuales que le corresponden a un director, en función de su estructura de centros y equipo, y las compara con las tareas formativas realizadas durante el mes.</p>
       <h3 style="margin-top:16px;">Entradas del director</h3>
       <ul>
-        <li><span class="pill">Centros</span> Número de centros o secciones que gestiona. A partir del 2º, cada sección adicional resta 1h semanal.</li>
-        <li><span class="pill">Profesores</span> Cada profesor activo resta 1,5h semanales al director.</li>
+        <li><span class="pill">Centros</span> A partir del 2º, cada sección adicional resta 1h semanal.</li>
+        <li><span class="pill">Profesores</span> Cada profesor activo resta 1,5h semanales.</li>
         <li><span class="pill">ATT</span> Cada hora de atención al alumno resta 0,5h semanales.</li>
       </ul>
-
       <h3 style="margin-top:16px;">Fórmula de horas base</h3>
-      <p>El director parte de <strong>32h semanales</strong> menos todas las reducciones. Las horas mensuales se calculan como: <strong>(horas semanales ÷ 5) × 22 días laborables</strong>.</p>
-
-      <h3 style="margin-top:16px;">Peso de cada tarea realizada</h3>
+      <p>El director parte de <strong>32h semanales</strong> (40h × 80%). Las horas mensuales se calculan como: <strong>(horas semanales ÷ 5) × 22 días laborables</strong>.</p>
+      <h3 style="margin-top:16px;">Peso de cada tarea</h3>
       <ul>
         <li><span class="pill">Curso teórico</span> 16h por curso</li>
         <li><span class="pill">Práctica</span> 0,75h por práctica</li>
         <li><span class="pill">Masterclass</span> 2h por sesión</li>
-        <li><span class="pill">Evaluador</span> 1h por evaluación</li>
-        <li><span class="pill">Asistencia examen</span> 1h por asistencia</li>
-        <li><span class="pill">Alumno a examen</span> 0,75h por alumno</li>
-        <li><span class="pill">Festivo intersemanal</span> Descuenta (horas semanales ÷ 5) por día festivo</li>
+        <li><span class="pill">Evaluador</span> 1h</li>
+        <li><span class="pill">Asistencia examen</span> 1h</li>
+        <li><span class="pill">Alumno a examen</span> 0,75h</li>
+        <li><span class="pill">Festivo intersemanal</span> Descuenta horas semanales ÷ 5 por día</li>
       </ul>
-
-      <h3 style="margin-top:16px;">Resultado final</h3>
-      <p>Si el resultado es <strong style="color:#b94040;">negativo (rojo)</strong>, faltan horas por realizar ese mes. Si es <strong style="color:#1a7a45;">positivo (verde)</strong>, el director lleva horas acumuladas de más.</p>
+      <h3 style="margin-top:16px;">Resultado</h3>
+      <p><strong style="color:#b94040;">Rojo (negativo)</strong> → faltan horas por realizar. <strong style="color:#1a7a45;">Verde (positivo)</strong> → horas acumuladas de más.</p>
     </div>
 
   </div>
@@ -210,37 +253,24 @@
     <div class="modal">
       <h2>Exportar informe</h2>
       <p>Elige el mes y el formato de exportación.</p>
-
       <label>Mes</label>
       <select id="export-month">
-        <option value="Enero">Enero</option>
-        <option value="Febrero">Febrero</option>
-        <option value="Marzo">Marzo</option>
-        <option value="Abril">Abril</option>
-        <option value="Mayo" selected>Mayo</option>
-        <option value="Junio">Junio</option>
-        <option value="Julio">Julio</option>
-        <option value="Agosto">Agosto</option>
-        <option value="Septiembre">Septiembre</option>
-        <option value="Octubre">Octubre</option>
-        <option value="Noviembre">Noviembre</option>
-        <option value="Diciembre">Diciembre</option>
+        <option value="Enero">Enero</option><option value="Febrero">Febrero</option>
+        <option value="Marzo">Marzo</option><option value="Abril">Abril</option>
+        <option value="Mayo" selected>Mayo</option><option value="Junio">Junio</option>
+        <option value="Julio">Julio</option><option value="Agosto">Agosto</option>
+        <option value="Septiembre">Septiembre</option><option value="Octubre">Octubre</option>
+        <option value="Noviembre">Noviembre</option><option value="Diciembre">Diciembre</option>
       </select>
-
       <label>Formato</label>
       <div class="format-btns">
         <div class="format-btn selected" id="fmt-pdf" onclick="selectFmt('pdf')">
-          <div class="fmt-icon">📄</div>
-          <div class="fmt-label">PDF</div>
-          <div class="fmt-desc">Para compartir</div>
+          <div class="fmt-icon">📄</div><div class="fmt-label">PDF</div><div class="fmt-desc">Para compartir</div>
         </div>
         <div class="format-btn" id="fmt-xlsx" onclick="selectFmt('xlsx')">
-          <div class="fmt-icon">📊</div>
-          <div class="fmt-label">Excel</div>
-          <div class="fmt-desc">Para editar</div>
+          <div class="fmt-icon">📊</div><div class="fmt-label">Excel</div><div class="fmt-desc">Para editar</div>
         </div>
       </div>
-
       <div class="modal-actions">
         <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
         <button class="btn-download" onclick="doExport()">Descargar</button>
@@ -249,6 +279,7 @@
   </div>
 
   <script>
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwevUGoPPns9wpGSwv_pC6b3y9xaxOCMQses7Ln9lvJH8frWOGYBPRfwcJ8yAeDpqpRCg/exec';
     const fmt = n => n.toFixed(1).replace('.', ',');
     const val = id => parseFloat(document.getElementById(id).value) || 0;
     let state = {};
@@ -278,16 +309,46 @@
       state={b5,b6,b7,b10,b11,b12,b13,b16,b17,b21,b22,b23,b24,b25,b26,b27,b30};
     }
 
-    document.querySelectorAll('input').forEach(i=>i.addEventListener('input',calc));
+    document.querySelectorAll('input[type=number]').forEach(i=>i.addEventListener('input',calc));
     calc();
 
     // README
     function toggleReadme() {
-      const box=document.getElementById('readme-box'), btn=document.getElementById('readme-btn');
-      box.classList.toggle('open'); btn.classList.toggle('open');
+      document.getElementById('readme-box').classList.toggle('open');
+      document.getElementById('readme-btn').classList.toggle('open');
     }
 
-    // MODAL
+    // ENVIAR INFORME
+    async function sendReport() {
+      const email = document.getElementById('director-email').value.trim();
+      const month = document.getElementById('send-month').value;
+      const status = document.getElementById('send-status');
+
+      if (!email) { status.className='ko'; status.textContent='Introduce tu email @hoyvoy.com'; return; }
+      if (!email.endsWith('@hoyvoy.com')) { status.className='ko'; status.textContent='Usa tu cuenta @hoyvoy.com'; return; }
+
+      const nombre = email.split('@')[0].replace('.', ' ').replace(/\b\w/g, l=>l.toUpperCase());
+      const payload = { ...state, email, nombre, mes: month };
+
+      status.className=''; status.textContent='Enviando...';
+
+      try {
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        status.className='ok';
+        status.textContent='✓ Informe enviado correctamente. Generando tu copia PDF...';
+        setTimeout(() => exportPDF(`HorasFormativas_${month}_${nombre.replace(' ','_')}`, month, nombre), 800);
+      } catch(e) {
+        status.className='ko';
+        status.textContent='Error al enviar. Inténtalo de nuevo.';
+      }
+    }
+
+    // MODAL EXPORTAR
     let selectedFmt='pdf';
     function openModal(){ document.getElementById('modal-overlay').classList.add('open'); }
     function closeModal(){ document.getElementById('modal-overlay').classList.remove('open'); }
@@ -297,12 +358,13 @@
       document.getElementById('fmt-pdf').classList.toggle('selected',f==='pdf');
       document.getElementById('fmt-xlsx').classList.toggle('selected',f==='xlsx');
     }
-
     function doExport(){
       const month=document.getElementById('export-month').value;
+      const email=document.getElementById('director-email').value.trim();
+      const nombre=email ? email.split('@')[0].replace('.',' ').replace(/\b\w/g,l=>l.toUpperCase()) : 'Director';
       const filename=`HorasFormativas_${month}`;
       if(selectedFmt==='xlsx') exportXLSX(filename, month);
-      else exportPDF(filename, month);
+      else exportPDF(filename, month, nombre);
       closeModal();
     }
 
@@ -310,34 +372,29 @@
       const s=state;
       const rows=[
         ['Calculadora de Horas Formativas del Director — Hoy Voy',''],
-        ['Mes', month],
-        [''],
+        ['Mes', month],[''],
         ['ENTRADAS',''],
         ['Número de centros / secciones', s.b5],
         ['Profesores activos', s.b6],
-        ['Atención al alumno (ATT)', s.b7],
-        [''],
+        ['Atención al alumno (ATT)', s.b7],[''],
         ['REDUCCIONES',''],
         ['Secciones adicionales', s.b10],
         ['Reducción por profesores (1,5h/profe)', s.b11],
         ['Reducción por ATT (0,5h/ATT)', s.b12],
-        ['Reducción por secciones adicionales', s.b13],
-        [''],
+        ['Reducción por secciones adicionales', s.b13],[''],
         ['RESULTADO SEMANAL / MENSUAL',''],
         ['Horas semanales', s.b16],
-        ['Horas mensuales', s.b17],
-        [''],
+        ['Horas mensuales', s.b17],[''],
         ['TAREAS REALIZADAS',''],
-        ['Cursos teóricos realizados (×16h)', s.b21],
-        ['Prácticas realizadas (×0,75h)', s.b22],
-        ['Masterclass realizadas (×2h)', s.b23],
-        ['Evaluadores realizados (×1h)', s.b24],
+        ['Cursos teóricos (×16h)', s.b21],
+        ['Prácticas (×0,75h)', s.b22],
+        ['Masterclass (×2h)', s.b23],
+        ['Evaluadores (×1h)', s.b24],
         ['Asistencias a examen (×1h)', s.b25],
-        ['Alumnos subidos a examen (×0,75h)', s.b26],
-        ['Días festivos intersemanales', s.b27],
-        [''],
+        ['Alumnos a examen (×0,75h)', s.b26],
+        ['Días festivos', s.b27],[''],
         ['RESULTADO FINAL', s.b30>0 ? -Math.abs(s.b30) : Math.abs(s.b30)],
-        ['Estado', s.b30>0 ? 'Faltan horas por realizar' : s.b30<0 ? 'Horas acumuladas de más' : 'Al día'],
+        ['Estado', s.b30>0?'Faltan horas':s.b30<0?'Horas acumuladas de más':'Al día'],
       ];
       const ws=XLSX.utils.aoa_to_sheet(rows);
       ws['!cols']=[{wch:42},{wch:16}];
@@ -346,41 +403,40 @@
       XLSX.writeFile(wb,`${filename}.xlsx`);
     }
 
-    function exportPDF(filename, month){
+    function exportPDF(filename, month, nombre='Director'){
       const s=state;
       const resultSign=s.b30>0?'-':'+';
       const resultVal=Math.abs(s.b30).toFixed(1).replace('.',',')+' h';
       const resultText=s.b30>0?'Te faltan por realizar este mes':s.b30<0?'Llevas horas acumuladas de más':'Justo al día';
       const resultColor=s.b30>0?'#b94040':'#1a7a45';
+      const resultBg=s.b30>0?'#fff5f5':'#edfaf2';
+      const resultBorder=s.b30>0?'#f0d0d0':'#b6e8cb';
 
       const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"/>
       <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
       <style>
         *{box-sizing:border-box;margin:0;padding:0;}
-        body{font-family:'Nunito',sans-serif;color:#1a1a1a;padding:24px 32px;width:210mm;min-height:297mm;}
+        body{font-family:'Nunito',sans-serif;color:#1a1a1a;padding:24px 32px;width:210mm;}
         .logo-row{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
         .logo-row img{width:36px;height:36px;}
         .logo-row span{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#aaa;}
         h1{font-size:15px;font-weight:800;text-transform:uppercase;letter-spacing:0.05em;background:#f5e400;padding:10px 14px;border-radius:8px;margin-bottom:4px;}
-        .mes{font-size:12px;font-weight:700;color:#777;margin-bottom:16px;padding-left:2px;}
-        .cols{display:grid;grid-template-columns:1fr 1fr;gap:0 24px;}
+        .meta{font-size:12px;font-weight:600;color:#777;margin-bottom:16px;padding-left:2px;}
+        .cols{display:grid;grid-template-columns:1fr 1fr;gap:0 28px;}
         .section{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#aaa;margin:14px 0 6px;}
         .row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0f0ea;font-size:12px;font-weight:600;}
         .row span:last-child{font-weight:700;}
         .neg{color:#b94040;}
-        .result{margin-top:16px;border-radius:10px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;background:${s.b30>0?'#fff5f5':'#edfaf2'};border:1px solid ${s.b30>0?'#f0d0d0':'#b6e8cb'};}
+        .result{margin-top:16px;border-radius:10px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;background:${resultBg};border:1px solid ${resultBorder};}
         .result-left .label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#777;margin-bottom:3px;}
         .result-left .sub{font-size:13px;font-weight:700;}
         .result-value{font-size:26px;font-weight:700;color:${resultColor};}
         .footer{margin-top:20px;font-size:10px;color:#bbb;font-weight:600;text-align:center;}
-        @media print{
-          @page{size:A4;margin:0;}
-          body{padding:18px 28px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-        }
+        @media print{@page{size:A4;margin:0;}body{padding:18px 28px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}}
       </style></head><body>
       <div class="logo-row"><img src="https://es.hoy-voy.com/assets/header/hoy-voy-logo.png"/><span>Herramienta interna · Hoy Voy</span></div>
       <h1>Horas Formativas del Director</h1>
-      <div class="mes">Informe del mes de ${month}</div>
+      <div class="meta">Informe de ${month} · ${nombre}</div>
       <div class="cols">
         <div>
           <div class="section">Entradas</div>
