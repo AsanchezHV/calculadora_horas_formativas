@@ -335,7 +335,7 @@
       return;
     }
     document.getElementById('step-email-send').style.display = 'none';
-    document.getElementById('step-pin-send').style.display = '';
+    document.getElementById('step-pin-send').style.display = 'block';
     document.getElementById('pin-send-desc').textContent =
       `Hemos enviado un código a ${email}. Introdúcelo para confirmar el envío.`;
     document.getElementById('send-pin').focus();
@@ -343,7 +343,7 @@
   } catch(e) {
     // Fallback si hay CORS — asumimos que se envió
     document.getElementById('step-email-send').style.display = 'none';
-    document.getElementById('step-pin-send').style.display = '';
+    document.getElementById('step-pin-send').style.display = 'block';
     document.getElementById('pin-send-desc').textContent =
       `Hemos enviado un código a ${email}. Introdúcelo para confirmar el envío.`;
     document.getElementById('send-pin').focus();
