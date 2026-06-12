@@ -319,24 +319,37 @@
     }
 
     // ENVIAR INFORME CON PIN
-    function requestSendPin() {
-      const email  = document.getElementById('director-email').value.trim().toLowerCase();
-      const status = document.getElementById('send-status');
-      if (!email) { status.className='ko'; status.textContent='Introduce tu email'; return; }
+    async function requestSendPin() {
+  const email  = document.getElementById('director-email').value.trim().toLowerCase();
+  const status = document.getElementById('send-status');
+  if (!email) { status.className='ko'; status.textContent='Introduce tu email'; return; }
 
-      status.className=''; status.textContent='Enviando código de verificación...';
+  status.className=''; status.textContent='Enviando código de verificación...';
 
-      const img = new Image();
-      img.src = `${SCRIPT_URL}?action=requestPin&email=${encodeURIComponent(email)}&t=${Date.now()}`;
-
-      setTimeout(() => {
-        document.getElementById('step-email-send').style.display = 'none';
-        document.getElementById('step-pin-send').style.display = '';
-        document.getElementById('pin-send-desc').textContent =
-          `Hemos enviado un código a ${email}. Introdúcelo para confirmar el envío.`;
-        document.getElementById('send-pin').focus();
-      }, 2000);
+  try {
+    const res  = await fetch(`${SCRIPT_URL}?action=requestPin&email=${encodeURIComponent(email)}`);
+    const data = await res.json();
+    if (!data.ok) {
+      status.className='ko';
+      status.textContent = data.error || 'Email no reconocido. Contacta con dirección.';
+      return;
     }
+    document.getElementById('step-email-send').style.display = 'none';
+    document.getElementById('step-pin-send').style.display = '';
+    document.getElementById('pin-send-desc').textContent =
+      `Hemos enviado un código a ${email}. Introdúcelo para confirmar el envío.`;
+    document.getElementById('send-pin').focus();
+    status.textContent = '';
+  } catch(e) {
+    // Fallback si hay CORS — asumimos que se envió
+    document.getElementById('step-email-send').style.display = 'none';
+    document.getElementById('step-pin-send').style.display = '';
+    document.getElementById('pin-send-desc').textContent =
+      `Hemos enviado un código a ${email}. Introdúcelo para confirmar el envío.`;
+    document.getElementById('send-pin').focus();
+    status.textContent = '';
+  }
+}
 
     async function confirmSend() {
       const email = document.getElementById('director-email').value.trim().toLowerCase();
